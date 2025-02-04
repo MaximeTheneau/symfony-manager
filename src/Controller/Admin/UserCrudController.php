@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
 class UserCrudController extends AbstractCrudController
 {
-
     public static function getEntityFqcn(): string
     {
         return User::class;
@@ -31,12 +30,11 @@ class UserCrudController extends AbstractCrudController
                 'second_options' => ['label' => '(Repeat)'],
                 'mapped' => false,
             ])
-            ->setRequired($pageName === Crud::PAGE_NEW)
+            ->setRequired(Crud::PAGE_NEW === $pageName)
             ->onlyOnForms()
-            ;
+        ;
         $fields[] = $password;
 
         return $fields;
     }
-
 }
