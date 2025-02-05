@@ -65,7 +65,6 @@ class DashboardUserController extends AbstractDashboardController
 
         if ($user instanceof User) {
             // Maintenant vous pouvez appeler getId() en toute sécurité
-            $userId = $user->getId();
         } else {
             // L'utilisateur n'est pas une instance de User, gérer l'erreur
             throw new AccessDeniedException('User is not authenticated');
@@ -75,6 +74,8 @@ class DashboardUserController extends AbstractDashboardController
             ->setAction('edit')
             ->setEntityId($user->getId());
 
-        yield MenuItem::linkToCrud('Business', 'fa fa-building', Business::class);
+        if ('ROLE_BUSINESS' || 'ROLE_ADMIN' === $this->getUser()->getRoles()[0]) {
+            yield MenuItem::linkToCrud('Business', 'fa fa-building', Business::class);
+        }
     }
 }

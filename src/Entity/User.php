@@ -42,7 +42,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Business>
      */
-    #[ORM\OneToMany(targetEntity: Business::class, mappedBy: 'owner')]
+    #[ORM\OneToMany(targetEntity: Business::class, mappedBy: 'owner', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $businesses;
 
     public function __construct()

@@ -74,8 +74,8 @@ class UserCrudController extends AbstractCrudController
             ->setFormType(RepeatedType::class)
             ->setFormTypeOptions([
                 'type' => PasswordType::class,
-                'first_options' => ['label' => 'Password'],
-                'second_options' => ['label' => '(Repeat)'],
+                'first_options' => ['label' => 'Password', 'attr' => ['data-controller' => 'password-field']],
+                'second_options' => ['label' => '(Repeat)', 'attr' => ['data-controller' => 'password-field']],
                 'mapped' => false,
             ])
             ->setRequired(Crud::PAGE_NEW === $pageName)
@@ -102,6 +102,6 @@ class UserCrudController extends AbstractCrudController
 
         $this->addFlash('success', 'Votre compte a été supprimé.');
 
-        return $this->redirectToRoute('app_logout');
+        return $this->redirect('login');
     }
 }

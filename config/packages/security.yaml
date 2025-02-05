@@ -35,12 +35,21 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/admin/*, roles: ROLE_ADMIN }
+        - { path: ^/admin/*, roles: ROLE_ADMIN }
+        - { path: ^/dashboard/user/\d+/(delete|edit)$, roles: ROLE_BUSINESS }
+        - { path: ^/dashboard/user*, roles: ROLE_ADMIN }
+
+
 
         #  ROLE_USER 
-        - { path: ^/dashboard/* , roles: ROLE_USER}
+
+        #  ROLE_BUSINESS
+        - { path: ^/dashboard/business/* , roles: ROLE_BUSINESS}
+
+
 
         - { path: ^/login, roles: PUBLIC_ACCESS}
-        - { path: ^/, roles: PUBLIC_ACCESS}
+        # - { path: ^/, roles: PUBLIC_ACCESS}
 
 
         
@@ -49,7 +58,7 @@ security:
 
     role_hierarchy:
         # ADMIN > USER        
-        ROLE_ADMIN : ROLE_USER
+        ROLE_ADMIN : ROLE_BUSINESS
 
 
 when@test:
