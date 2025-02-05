@@ -33,7 +33,6 @@ class UserCrudController extends AbstractCrudController
 
     public function edit($entityId)
     {
-        // dd($this->getUser()->getId());
         if ($this->getUser()->getId() !== (int) $entityId) {
             return new RedirectResponse($this->urlGenerator->generate('dashboard'));
         }
@@ -41,34 +40,6 @@ class UserCrudController extends AbstractCrudController
 
         return parent::edit($context);
     }
-    // private $adminContextProvider;
-
-    // public function __construct(AdminContextProvider $adminContextProvider)
-    // {
-    //     $this->adminContextProvider = $adminContextProvider;
-    // }
-
-    // #[Route('/dashboard/user/{id}/edit', name: 'dashboard_user_edit', methods: ['GET', 'POST'])]
-    // public function editUser($id, EntityManagerInterface $entityManager, SecurityBundleSecurity $security): Response
-    // {
-    //     $currentUser = $security->getUser();
-
-    //     $user = $entityManager->getRepository(User::class)->find($id);
-
-    //     // if (!$user) {
-    //     //     $this->addFlash('error', 'Utilisateur non trouvé.');
-
-    //     //     return $this->redirectToRoute('admin');
-    //     // }
-
-    //     // if ($currentUser->getId() !== $user->getId() && !in_array('ROLE_ADMIN', $currentUser->getRoles())) {
-    //     //     $this->addFlash('error', 'Vous n\'avez pas les droits pour modifier ce compte.');
-
-    //     //     return $this->redirectToRoute('admin');
-    //     // }
-
-    //     return parent::edit($this->adminContextProvider->getContext());
-    // }
 
     public static function getEntityFqcn(): string
     {

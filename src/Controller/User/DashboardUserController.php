@@ -2,6 +2,7 @@
 
 namespace App\Controller\User;
 
+use App\Entity\Business;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -73,5 +74,7 @@ class DashboardUserController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Edit Your Profile', 'fa fa-user', User::class)
             ->setAction('edit')
             ->setEntityId($user->getId());
+
+        yield MenuItem::linkToCrud('Business', 'fa fa-building', Business::class);
     }
 }
