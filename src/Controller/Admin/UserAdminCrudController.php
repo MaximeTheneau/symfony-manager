@@ -5,11 +5,12 @@ namespace App\Controller\Admin;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
-class UserCrudController extends AbstractCrudController
+class UserAdminCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
@@ -20,6 +21,7 @@ class UserCrudController extends AbstractCrudController
     {
         $fields = [
             TextField::new('email'),
+            BooleanField::new('isVerified', 'Email Vérifié'),
         ];
 
         $password = TextField::new('password')
