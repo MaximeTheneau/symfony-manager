@@ -13,7 +13,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
 use Symfony\Bundle\SecurityBundle\Security as SecurityBundleSecurity;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -34,7 +33,7 @@ class UserCrudController extends AbstractCrudController
     public function edit($entityId)
     {
         if ($this->getUser()->getId() !== (int) $entityId) {
-            return new RedirectResponse($this->urlGenerator->generate('dashboard'));
+            throw new AccessDeniedException('Access denied');
         }
         $context = $this->adminContextProvider->getContext();
 

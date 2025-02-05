@@ -12,12 +12,40 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class BusinessCrudController extends AbstractCrudController
 {
+    private $urlGenerator;
+    private $adminContextProvider;
+    private $entityManager;
+
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        UrlGeneratorInterface $urlGenerator, AdminContextProvider $adminContextProvider)
+    {
+        $this->urlGenerator = $urlGenerator;
+        $this->entityManager = $entityManager;
+        $this->adminContextProvider = $adminContextProvider;
+    }
+
     public static function getEntityFqcn(): string
     {
         return Business::class;
+    }
+
+    public function edit($entityId)
+    {
+        $entity = $this->entityManager->getRepository(Business::class)->find($entityId);
+        $context = $this->adminContextProvider->getContext();
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        if ($this->getUser()->getId() !== (int) $entity->getOwner()->getId()) {
+            throw new AccessDeniedException('Access denied');
+        }
+
+        return parent::edit($context);
     }
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
