@@ -9,13 +9,67 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
+use Symfony\Bundle\SecurityBundle\Security as SecurityBundleSecurity;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UserCrudController extends AbstractCrudController
 {
+    private $security;
+    private $urlGenerator;
+    private $adminContextProvider;
+
+    public function __construct(SecurityBundleSecurity $security, UrlGeneratorInterface $urlGenerator, AdminContextProvider $adminContextProvider)
+    {
+        $this->security = $security;
+        $this->urlGenerator = $urlGenerator;
+        $this->adminContextProvider = $adminContextProvider;
+    }
+
+    public function edit($entityId)
+    {
+        // dd($this->getUser()->getId());
+        if ($this->getUser()->getId() !== (int) $entityId) {
+            return new RedirectResponse($this->urlGenerator->generate('dashboard'));
+        }
+        $context = $this->adminContextProvider->getContext();
+
+        return parent::edit($context);
+    }
+    // private $adminContextProvider;
+
+    // public function __construct(AdminContextProvider $adminContextProvider)
+    // {
+    //     $this->adminContextProvider = $adminContextProvider;
+    // }
+
+    // #[Route('/dashboard/user/{id}/edit', name: 'dashboard_user_edit', methods: ['GET', 'POST'])]
+    // public function editUser($id, EntityManagerInterface $entityManager, SecurityBundleSecurity $security): Response
+    // {
+    //     $currentUser = $security->getUser();
+
+    //     $user = $entityManager->getRepository(User::class)->find($id);
+
+    //     // if (!$user) {
+    //     //     $this->addFlash('error', 'Utilisateur non trouvé.');
+
+    //     //     return $this->redirectToRoute('admin');
+    //     // }
+
+    //     // if ($currentUser->getId() !== $user->getId() && !in_array('ROLE_ADMIN', $currentUser->getRoles())) {
+    //     //     $this->addFlash('error', 'Vous n\'avez pas les droits pour modifier ce compte.');
+
+    //     //     return $this->redirectToRoute('admin');
+    //     // }
+
+    //     return parent::edit($this->adminContextProvider->getContext());
+    // }
+
     public static function getEntityFqcn(): string
     {
         return User::class;
@@ -32,9 +86,11 @@ class UserCrudController extends AbstractCrudController
     {
         return $actions
                 ->disable(Action::SAVE_AND_RETURN)
-            ->update(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE, function (Action $action) {
-                return $action->setLabel('Sauvegarder')->setCssClass('btn btn-primary');
-            });
+
+                // Modifie le label et la classe du bouton "Sauvegarder et continuer"
+                ->update(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE, function (Action $action) {
+                    return $action->setLabel('Sauvegarder')->setCssClass('btn btn-primary');
+                });
     }
 
     public function configureFields(string $pageName): iterable
@@ -76,6 +132,6 @@ class UserCrudController extends AbstractCrudController
 
         $this->addFlash('success', 'Votre compte a été supprimé.');
 
-        return $this->redirectToRoute('app_logout'); // Redirige vers la déconnexion
+        return $this->redirectToRoute('app_logout');
     }
 }
