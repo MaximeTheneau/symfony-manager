@@ -1,18 +1,25 @@
 {% extends '@EasyAdmin/crud/edit.html.twig' %}
-{% block main %}
+    
+{% block javascripts %}
+    {% block importmap %}{{ importmap('app') }}{% endblock %}
+{% endblock %}
 
-{% set user = _context.entity.instance %}
+{% block main %}
+  
+ {% set user = _context.entity.instance %}
     {% if user.id == app.user.id %}
         <h1 class="h3">Mon compte</hjson>
+            <div data-controller="password">
         {{ parent() }}
-        {% block form_actions %}
-        <div class="">
-                <form method="post" action="{{ path('dashboard_user_delete', { id: user.id }) }}"
-                    onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.');">
-                    <button type="submit" class="fw-bold border-0 bg-transparent p-0">Supprimer mon compte</button>
-                </form>
+            {% block form_actions %}
+            <div class="">
+                    <form method="post" action="{{ path('dashboard_user_delete', { id: user.id }) }}"
+                        onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.');">
+                        <button type="submit" class="fw-bold border-0 bg-transparent p-0">Supprimer mon compte</button>
+                    </form>
+                </div>
+            {% endblock %}
             </div>
-        {% endblock %}
         {% else %}
 
         <h1>Accès refusé</h1>

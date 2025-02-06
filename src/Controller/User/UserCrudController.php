@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
 use Symfony\Bundle\SecurityBundle\Security as SecurityBundleSecurity;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\HttpFoundation\Response;
@@ -74,8 +75,8 @@ class UserCrudController extends AbstractCrudController
             ->setFormType(RepeatedType::class)
             ->setFormTypeOptions([
                 'type' => PasswordType::class,
-                'first_options' => ['label' => 'Password', 'attr' => ['data-controller' => 'password-field']],
-                'second_options' => ['label' => '(Repeat)', 'attr' => ['data-controller' => 'password-field']],
+                'first_options' => ['label' => 'Password'],
+                'second_options' => ['label' => '(Repeat)'],
                 'mapped' => false,
             ])
             ->setRequired(Crud::PAGE_NEW === $pageName)
