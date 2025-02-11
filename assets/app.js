@@ -13,19 +13,26 @@ import './styles/app.css';
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import AppVue from './vue/App.vue';
+import Home from './vue/components/Home.vue';
 import BusinessList from './vue/components/BusinessList.vue';
+import NotFound from './vue/components/NotFound'
 
 // Configuration des routes
 const routes = [
     {
         path: '/',
         name: 'Home',
-        component: AppVue
+        component: Home
     },
     {
         path: '/businesses',
         name: 'BusinessList',
         component: BusinessList
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: NotFound
     }
 ];
 
