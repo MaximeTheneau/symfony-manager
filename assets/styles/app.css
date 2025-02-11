@@ -2,4 +2,11 @@
     background-color: skyblue;
 } */
 
+input {
+    display: inline !important;
+    width: 90% !important;
+}
+.pwd-icon{
+    display: inline;
+}
 

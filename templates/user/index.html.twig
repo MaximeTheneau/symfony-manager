@@ -1,16 +1,17 @@
-{% extends '@EasyAdmin/crud/edit.html.twig' %}
-    
-{% block javascripts %}
-    {% block importmap %}{{ importmap('app') }}{% endblock %}
-{% endblock %}
 
-{% block main %}
+{% extends '@EasyAdmin/crud/edit.html.twig' %}
+
+
+
+    {% block main %}
+
   
  {% set user = _context.entity.instance %}
     {% if user.id == app.user.id %}
         <h1 class="h3">Mon compte</hjson>
             <div data-controller="password">
-        {{ parent() }}
+
+            {{ parent() }}
             {% block form_actions %}
             <div class="">
                     <form method="post" action="{{ path('dashboard_user_delete', { id: user.id }) }}"
@@ -20,12 +21,11 @@
                 </div>
             {% endblock %}
             </div>
+           
         {% else %}
 
         <h1>Accès refusé</h1>
         <p>Vous n'avez pas les autorisations nécessaires pour accéder à cette page.</p>
         <p>Si vous pensez que cela est une erreur, contactez un administrateur.</p>
     {% endif %}
-   
-
 {% endblock %}

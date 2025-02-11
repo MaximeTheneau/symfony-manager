@@ -1,0 +1,17 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+
+{% block main %}
+
+<h2>Commentaires</h2>
+        {{ parent() }}
+
+{% for comment in business.comments %}
+    <p>{{ comment.content }} - <small>{{ comment.createdAt|date('d/m/Y H:i') }}</small></p>
+{% else %}
+    <p>Aucun commentaire pour le moment.</p>
+{% endfor %}
+
+<!-- Bouton qui redirige vers l'interface de création de EasyAdmin -->
+<a href="{{ createCommentUrl }}" class="btn btn-primary">Ajouter un commentaire</a>
+{% endblock %}

@@ -6,6 +6,7 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -104,5 +105,37 @@ class UserCrudController extends AbstractCrudController
         $this->addFlash('success', 'Votre compte a été supprimé.');
 
         return $this->redirect('login');
+    }
+
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $assets
+            // imports the given entrypoint defined in the importmap.php file of AssetMapper
+            // it's equivalent to adding this inside the <head> element:
+            // {{ importmap('admin') }}
+            // you can also import multiple entries
+            // it's equivalent to calling {{ importmap(['app', 'admin']) }}
+
+            // adds the CSS and JS assets associated to the given Webpack Encore entry
+            // it's equivalent to adding these inside the <head> element:
+            // {{ encore_entry_link_tags('...') }} and {{ encore_entry_script_tags('...') }}
+            ->addWebpackEncoreEntry('app')
+
+            // it's equivalent to adding this inside the <head> element:
+            // <link rel="stylesheet" href="{{ asset('...') }}">
+            // ->addCssFile('build/admin.css')
+            // ->addCssFile('https://example.org/css/admin2.css')
+
+            // it's equivalent to adding this inside the <head> element:
+            // <script src="{{ asset('...') }}"></script>
+            // ->addJsFile('build/admin.js')
+            // ->addJsFile('https://example.org/js/admin2.js')
+
+            // use these generic methods to add any code before </head> or </body>
+            // the contents are included "as is" in the rendered page (without escaping them)
+            // ->addHtmlContentToHead('<link rel="dns-prefetch" href="https://assets.example.com">')
+            // ->addHtmlContentToBody('<script> ... </script>')
+            // ->addHtmlContentToBody('<!-- generated at '.time().' -->')
+        ;
     }
 }

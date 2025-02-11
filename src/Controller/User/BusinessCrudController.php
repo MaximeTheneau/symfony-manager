@@ -3,6 +3,7 @@
 namespace App\Controller\User;
 
 use App\Entity\Business;
+use App\Entity\Comments;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -16,7 +17,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class BusinessCrudController extends AbstractCrudController
@@ -24,15 +27,18 @@ class BusinessCrudController extends AbstractCrudController
     private $adminContextProvider;
     private $entityManager;
     private $tokenStorage;
+    private $adminUrlGenerator;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         AdminContextProvider $adminContextProvider,
         TokenStorageInterface $tokenStorage,
+        AdminUrlGenerator $adminUrlGenerator,
     ) {
         $this->entityManager = $entityManager;
         $this->adminContextProvider = $adminContextProvider;
         $this->tokenStorage = $tokenStorage;
+        $this->adminUrlGenerator = $adminUrlGenerator;
     }
 
     public static function getEntityFqcn(): string
@@ -99,5 +105,25 @@ class BusinessCrudController extends AbstractCrudController
 
         return $actions
             ->add(Crud::PAGE_INDEX, $detailAction);
+    }
+
+    public function detail($entityId): Response
+    {
+        $business = $this->entityManager->getRepository(Business::class)->find($entityId);
+        $comment = new Comments();
+        $comment->setBusiness($business);
+
+        $createCommentUrl = $this->adminUrlGenerator
+                ->setController(CommentsCrudController::class)
+                ->setAction('new')
+                ->set('entityFqcn', Comments::class);
+
+        $context = $this->adminContextProvider->getContext();
+
+        return $this->render('user/business/business_detail.html.twig', [
+            'context' => $context,
+            'business' => $business,
+            'createCommentUrl' => $createCommentUrl,
+        ]);
     }
 }

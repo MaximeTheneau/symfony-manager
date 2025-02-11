@@ -3,6 +3,7 @@
 namespace App\Controller\User;
 
 use App\Entity\Business;
+use App\Entity\Comments;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -77,5 +78,10 @@ class DashboardUserController extends AbstractDashboardController
         if ('ROLE_BUSINESS' || 'ROLE_ADMIN' === $this->getUser()->getRoles()[0]) {
             yield MenuItem::linkToCrud('Business', 'fa fa-building', Business::class);
         }
+
+        yield MenuItem::linkToCrud('Commentaire', 'fa fa-envelope', Comments::class)
+            // ->setAction('edit')
+            // ->setEntityId($user->getId())
+        ;
     }
 }
