@@ -1,10 +1,41 @@
-import './bootstrap.js';
-/*
- * Welcome to your app's main JavaScript file!
- *
- * We recommend including the built version of this JavaScript file
- * (and its CSS file) in your base layout (base.html.twig).
- */
+// assets/bootstrap.js
+import { startStimulusApp } from '@symfony/stimulus-bridge';
 
-// any CSS you import will output into a single css file (app.css in this case)
+export const app = startStimulusApp(require.context(
+    '@symfony/stimulus-bridge/lazy-controller-loader!./controllers',
+    true,
+    /\.[jt]sx?$/
+));
+
+// assets/app.js
+import './bootstrap.js';
 import './styles/app.css';
+import { createApp } from 'vue';
+import { createRouter, createWebHistory } from 'vue-router';
+import AppVue from './vue/App.vue';
+import BusinessList from './vue/components/BusinessList.vue';
+
+// Configuration des routes
+const routes = [
+    {
+        path: '/',
+        name: 'Home',
+        component: AppVue
+    },
+    {
+        path: '/businesses',
+        name: 'BusinessList',
+        component: BusinessList
+    }
+];
+
+// Création du router
+const router = createRouter({
+    history: createWebHistory('/'),
+    routes
+});
+
+// Création et configuration de l'application Vue
+const apps = createApp(AppVue);
+apps.use(router);
+apps.mount('#app');
