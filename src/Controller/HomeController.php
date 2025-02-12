@@ -8,16 +8,14 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class HomeController extends AbstractController
 {
-    #[Route('', name: 'app_home')]
-    public function index(): Response
+    #[Route('/test', name: 'app_home')]
+    #[Route('{page}', name: 'app_vue', requirements: ['page' => '(?!login$|register$|dashboard$).*'])]
+    public function index($page = ''): Response
     {
-        return $this->render('home/index.html.twig', [
-        ]);
-    }
+        if ('' !== $page) {
+            // Effectuer des actions spécifiques si une page est passée (par exemple, afficher un contenu dynamique basé sur 'page')
+        }
 
-    #[Route('/{path<.+>}')]
-    public function survey($path = ''): Response
-    {
         return $this->render('home/index.html.twig', [
         ]);
     }

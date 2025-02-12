@@ -13,17 +13,3 @@ export default {
     name: 'App'
 }
 </script>
-
-<style>
-#app {
-    font-family: Arial, sans-serif;
-}
-
-nav {
-    padding: 1rem;
-}
-
-nav a {
-    margin: 0 0.5rem;
-}
-</style>

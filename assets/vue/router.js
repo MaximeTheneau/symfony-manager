@@ -1,20 +1,36 @@
-import VueRouter from 'vue-router'
+import { createApp } from 'vue';
+import { createRouter, createWebHistory } from 'vue-router';
+import Home from './components/Home.vue';
+import BusinessList from './components/BusinessList.vue';
+import NotFound from './components/NotFound.vue';
+import AppVue from './App.vue';
 
-// components
-import BusinessList from './components/BusinessList.vue'
+// Configuration des routes
+const routes = [
+    {
+        path: '/',
+        name: 'Home',
+        component: Home
+    },
+    {
+        path: '/businesses',
+        name: 'BusinessList',
+        component: BusinessList
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: NotFound
+    }
+];
 
-const router = new VueRouter({
-    mode: 'history',
-    routes: [
-        {
-            path: '/businesses',
-            name: 'BusinessList',
-            component: BusinessList
-        },
-        
-    ]
-})
+const router = createRouter({
+    history: createWebHistory(),
+    routes
+});
 
-export default router
+const app = createApp(AppVue);
+app.use(router);
+app.mount('#app');
 
-Vue.use(VueRouter)
+export default router;

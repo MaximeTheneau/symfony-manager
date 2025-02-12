@@ -10,39 +10,5 @@ export const app = startStimulusApp(require.context(
 // assets/app.js
 import './bootstrap.js';
 import './styles/app.css';
-import { createApp } from 'vue';
-import { createRouter, createWebHistory } from 'vue-router';
-import AppVue from './vue/App.vue';
-import Home from './vue/components/Home.vue';
-import BusinessList from './vue/components/BusinessList.vue';
-import NotFound from './vue/components/NotFound'
 
-// Configuration des routes
-const routes = [
-    {
-        path: '/',
-        name: 'Home',
-        component: Home
-    },
-    {
-        path: '/businesses',
-        name: 'BusinessList',
-        component: BusinessList
-    },
-    {
-        path: '/:pathMatch(.*)*',
-        name: 'NotFound',
-        component: NotFound
-    }
-];
-
-// Création du router
-const router = createRouter({
-    history: createWebHistory('/'),
-    routes
-});
-
-// Création et configuration de l'application Vue
-const apps = createApp(AppVue);
-apps.use(router);
-apps.mount('#app');
+import './vue/router.js';
