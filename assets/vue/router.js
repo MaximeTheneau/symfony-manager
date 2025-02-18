@@ -1,9 +1,9 @@
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from './components/Home.vue';
-import BusinessList from './components/BusinessList.vue';
-import NotFound from './components/NotFound.vue';
-import AppVue from './App.vue';
+import Home from './vue/components/Home.vue';
+import BusinessList from './vue/components/BusinessList.vue';
+import NotFound from './vue/components/NotFound.vue';
+import AppVue from './vue/App.vue';
 
 // Configuration des routes
 const routes = [
@@ -25,12 +25,12 @@ const routes = [
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory('/'),
     routes
 });
 
-const app = createApp(AppVue);
-app.use(router);
-app.mount('#app');
+const apps = createApp(AppVue);
+apps.use(router);
+apps.mount('#app');
 
-export default router;
+export default router

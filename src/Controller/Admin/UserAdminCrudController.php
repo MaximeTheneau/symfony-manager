@@ -22,6 +22,7 @@ class UserAdminCrudController extends AbstractCrudController
         $fields = [
             TextField::new('email'),
             BooleanField::new('isVerified', 'Email Vérifié'),
+            BooleanField::new('isVerified', 'Email Vérifié'),
         ];
 
         $password = TextField::new('password')

@@ -17,8 +17,11 @@ class Comments
     #[ORM\Column(type: Types::TEXT)]
     private ?string $comment = null;
 
-    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\ManyToOne(inversedBy: 'comments', targetEntity: Business::class, )]
     private ?Business $business = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
 
     public function getId(): ?int
     {
@@ -45,6 +48,18 @@ class Comments
     public function setBusiness(?Business $business): static
     {
         $this->business = $business;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): static
+    {
+        $this->title = $title;
 
         return $this;
     }

@@ -24,8 +24,11 @@ class Business
     /**
      * @var Collection<int, Comments>
      */
-    #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'business')]
+    #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'business', orphanRemoval: true, cascade: ['persist'])]
     private Collection $comments;
+
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
 
     public function __construct()
     {
@@ -87,6 +90,18 @@ class Business
                 $comment->setBusiness(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): static
+    {
+        $this->title = $title;
 
         return $this;
     }
